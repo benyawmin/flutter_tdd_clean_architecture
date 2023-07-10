@@ -3,9 +3,8 @@ import 'package:clean_architecture_tdd_course/features/number_trivia/data/dataso
 import 'package:clean_architecture_tdd_course/features/number_trivia/data/datasources/number_trivia_remote_data_source.dart';
 import 'package:clean_architecture_tdd_course/features/number_trivia/data/repositories/number_trivia_repository_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-
-import '../../domain/usecases/get_random_number_trivia_test.dart';
 
 class MockRemoteDataSource extends Mock
     implements NumberTriviaRemoteDataSource {}
@@ -14,6 +13,7 @@ class MockLocalDataSource extends Mock implements NumberTriviaLocalDataSource {}
 
 class MockNetworkInfo extends Mock implements NetworkInfo {}
 
+@GenerateMocks([MockRemoteDataSource, MockLocalDataSource, MockNetworkInfo])
 void main() {
   NumberTriviaRepositoryImpl repository;
   MockRemoteDataSource mockRemoteDataSource;
@@ -24,9 +24,9 @@ void main() {
         mockRemoteDataSource = MockRemoteDataSource(),
         mockLocalDataSource = MockLocalDataSource(),
         mockNetworkInfo = MockNetworkInfo(),
-        repository = MockNumberTriviaRepository(
+        repository = NumberTriviaRepositoryImpl(
           remoteDataSource: mockRemoteDataSource,
-          localDataSourece: mockLocalDataSource,
+          localDataSource: mockLocalDataSource,
           networkInfo: mockNetworkInfo,
         ),
       });
